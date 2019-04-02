@@ -16,8 +16,6 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var yAngleLabel: UILabel!
     
-    @IBOutlet weak var zAngleLabel: UILabel!
-    
     
     let motionManager = CMMotionManager()
     
@@ -55,7 +53,6 @@ class ViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.xAngleLabel.text = "\(self.angleXY)"
                     self.yAngleLabel.text = "\(self.angleXZ)"
-                    self.zAngleLabel.text = "\(self.angleYZ)"
                 }
                 
             }
@@ -187,7 +184,7 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         
         if isMyPeripheralConected {
             var dataToSend: Data
-            let info = "\(abs(angleXY)):\(abs(angleXZ)):\(abs(angleYZ))\n"
+            let info = "\(abs(angleXY)):\(abs(angleXZ)))\n"
             dataToSend = info.data(using: String.Encoding.utf8)!
             
             if let characteristic = myCharacteristic {
