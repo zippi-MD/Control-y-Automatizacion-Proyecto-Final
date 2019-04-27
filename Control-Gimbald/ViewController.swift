@@ -30,6 +30,99 @@ class ViewController: UIViewController {
     var angleXY: Int = 0
     var angleXZ: Int = 0
     var angleYZ: Int = 0
+    
+    
+    //PID
+    
+    var readTime = 0.1
+    
+    //First Axis
+    
+    var desiredValueFirstAxis: Int = 90
+    var actualValueFirstAxis: Int = 0
+    
+    var positionForFirstAxis: Int = 90
+    
+    var kpFirstAxis = 0.7
+    var kiFirstAxis = 0.01
+    var kdFirstAxis = 0.01
+    
+    var integralErrorFirstAxis = 0
+    
+    var actualErrorFirstAxis = 0.0
+    var oldErrorFirstAxis = 0.0
+    
+    
+    // Proporcional -- Kp
+    
+    func getProportionalValueFirstAxis() -> Double {
+        return kpFirstAxis * Double(desiredValueFirstAxis - actualValueFirstAxis)
+    }
+    
+    
+    // Integral -- Ki
+    
+    func getIntegralValueFirstAxis() -> Double {
+        integralErrorFirstAxis += desiredValueFirstAxis - actualValueFirstAxis
+        return kiFirstAxis * Double(integralErrorFirstAxis) * readTime
+    }
+    
+    
+    // Derivative -- kd
+    
+    func getDerivativeValueFirstAxis() -> Double {
+        oldErrorFirstAxis = actualErrorFirstAxis
+        actualErrorFirstAxis = Double(desiredValueFirstAxis - actualValueFirstAxis)
+        let derivativeError = actualErrorFirstAxis - oldErrorFirstAxis
+        return kdFirstAxis * (derivativeError / readTime)
+    }
+    
+    
+    
+    //Second Axis
+    
+    var desiredValueSecondAxis: Int = 90
+    var actualValueSecondAxis: Int = 0
+    
+    var positionForSecondAxis: Int = 90
+    var actualPositionForSecondAxis: Int = 90
+    
+    var kpSecondAxis = 0.7
+    var kiSecondAxis = 0.01
+    var kdSecondAxis = 0.01
+    
+    var integralErrorSecondAxis = 0
+    
+    var actualErrorSecondAxis = 0.0
+    var oldErrorSecondAxis = 0.0
+    
+    
+    // Proporcional -- Kp
+    
+    func getProportionalValueSecondAxis() -> Double {
+        return kpSecondAxis * Double(desiredValueSecondAxis - actualValueSecondAxis)
+    }
+    
+    
+    // Integral -- Ki
+    
+    func getIntegralValueSecondAxis() -> Double {
+        integralErrorSecondAxis += desiredValueSecondAxis - actualValueSecondAxis
+        return kiSecondAxis * Double(integralErrorSecondAxis) * readTime
+    }
+    
+    
+    // Derivative -- kd
+    
+    func getDerivativeValueSecondAxis() -> Double {
+        oldErrorSecondAxis = actualErrorSecondAxis
+        actualErrorSecondAxis = Double(desiredValueSecondAxis - actualValueSecondAxis)
+        let derivativeError = actualErrorSecondAxis - oldErrorSecondAxis
+        return kdSecondAxis * (derivativeError / readTime)
+    }
+    
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +132,7 @@ class ViewController: UIViewController {
     }
     
     func startAccelerometerData(){
-        motionManager.accelerometerUpdateInterval = 0.1
+        motionManager.accelerometerUpdateInterval = 0.05
         
         motionManager.startAccelerometerUpdates(to: OperationQueue.current!){
             [unowned self] (data, error) in
@@ -51,8 +144,11 @@ class ViewController: UIViewController {
                 self.angleYZ = Int(self.accelerationIntoDegrees(accelerometerData.acceleration.y, accelerometerData.acceleration.z))
                 
                 DispatchQueue.main.async {
-                    self.xAngleLabel.text = "\(self.angleXY)"
-                    self.yAngleLabel.text = "\(self.angleXZ)"
+                    self.actualValueSecondAxis = abs(self.angleXY)
+                    self.xAngleLabel.text = "\(self.actualValueSecondAxis)"
+                    
+                    self.actualValueFirstAxis = abs(self.angleXZ)
+                    self.yAngleLabel.text = "\(self.actualValueFirstAxis)"
                 }
                 
             }
@@ -79,7 +175,34 @@ class ViewController: UIViewController {
     
     
     @objc func sendData(){
-        print("Some data")
+        
+        
+        
+        let pidValueFirstAxis = Int(getProportionalValueFirstAxis() + getIntegralValueFirstAxis() + getDerivativeValueFirstAxis())
+        
+        let newValueFirstAxis = positionForFirstAxis - pidValueFirstAxis
+        
+        
+        if newValueFirstAxis > 0 && newValueFirstAxis < 180 {
+            positionForFirstAxis = newValueFirstAxis
+        }
+        
+        
+        print("-----------------")
+        
+        let pidValueSecondAxis = Int(getProportionalValueSecondAxis())
+        
+        let newValueSecondAxis = positionForSecondAxis - pidValueSecondAxis
+        
+        if newValueSecondAxis > 0 && newValueSecondAxis < 180 {
+            positionForSecondAxis = newValueSecondAxis
+        }
+        print(getProportionalValueSecondAxis())
+        actualPositionForSecondAxis = (positionForSecondAxis * 90) / 110
+        print(actualPositionForSecondAxis)
+        
+        print("-----------------")
+        
         writeValue()
     }
 
@@ -184,7 +307,8 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
         
         if isMyPeripheralConected {
             var dataToSend: Data
-            let info = "\(abs(angleXY)):\(abs(angleXZ)))\n"
+            //angleXY
+            let info = "\(abs(actualPositionForSecondAxis)):\(abs(positionForFirstAxis))\n"
             dataToSend = info.data(using: String.Encoding.utf8)!
             
             if let characteristic = myCharacteristic {
