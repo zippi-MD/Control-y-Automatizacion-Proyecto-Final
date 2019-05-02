@@ -10,16 +10,49 @@ import UIKit
 import CoreMotion
 import CoreBluetooth
 
+enum controlState {
+    case controlling, changing
+}
+
 class ViewController: UIViewController {
     
     @IBOutlet weak var xAngleLabel: UILabel!
     
     @IBOutlet weak var yAngleLabel: UILabel!
     
+    @IBOutlet weak var changeValueButton: UIButton!
+    @IBOutlet weak var variablesView: UIView!
+    
+    var appState: controlState = .controlling
+    
+//    First Axis Stepper
+    
+    @IBOutlet weak var firstAxisKpValueLabel: UILabel!
+    @IBOutlet weak var firstAxisKiValueLabel: UILabel!
+    @IBOutlet weak var firstAxisKdValueLabel: UILabel!
+    
+    @IBOutlet weak var firstAxisKpStepper: UIStepper!
+    @IBOutlet weak var firstAxisKiStepper: UIStepper!
+    @IBOutlet weak var firstAxisKdStepper: UIStepper!
+    
+    
+    
+//    Second Axis Stepper
+    
+    @IBOutlet weak var secondAxisKpValueLabel: UILabel!
+    @IBOutlet weak var secondAxisKiValueLabel: UILabel!
+    @IBOutlet weak var secondAxiskdValueLabel: UILabel!
+    
+    @IBOutlet weak var secondAxisKpStepper: UIStepper!
+    @IBOutlet weak var secondAxisKiStepper: UIStepper!
+    @IBOutlet weak var secondAxisKdStepper: UIStepper!
+    
+    
+    
     
     let motionManager = CMMotionManager()
-    
     var manager: CBCentralManager!
+    
     var myBluetoothPeripheral: CBPeripheral!
     var myCharacteristic: CBCharacteristic!
     
@@ -34,7 +67,7 @@ class ViewController: UIViewController {
     
     //PID
     
-    var readTime = 0.1
+    var readTime = 0.05
     
     //First Axis
     
@@ -43,9 +76,21 @@ class ViewController: UIViewController {
     
     var positionForFirstAxis: Int = 90
     
-    var kpFirstAxis = 0.7
-    var kiFirstAxis = 0.01
-    var kdFirstAxis = 0.01
+    var kpFirstAxis = 0.209 {
+        willSet {
+            firstAxisKpValueLabel.text = "kp: \(newValue)"
+        }
+    }
+    var kiFirstAxis = 0.01 {
+        willSet {
+            firstAxisKiValueLabel.text = "ki: \(newValue)"
+        }
+    }
+    var kdFirstAxis = 0.005 {
+        willSet {
+            firstAxisKdValueLabel.text = "kd: \(newValue)"
+        }
+    }
     
     var integralErrorFirstAxis = 0
     
@@ -87,9 +132,21 @@ class ViewController: UIViewController {
     var positionForSecondAxis: Int = 90
     var actualPositionForSecondAxis: Int = 90
     
-    var kpSecondAxis = 0.7
-    var kiSecondAxis = 0.01
-    var kdSecondAxis = 0.01
+    var kpSecondAxis = 0.209 {
+        willSet {
+            secondAxisKpValueLabel.text = "kp: \(newValue)"
+        }
+    }
+    var kiSecondAxis = 0.05 {
+        willSet {
+            secondAxisKiValueLabel.text = "ki: \(newValue)"
+        }
+    }
+    var kdSecondAxis = 0.007 {
+        willSet {
+            secondAxiskdValueLabel.text = "kd: \(newValue)"
+        }
+    }
     
     var integralErrorSecondAxis = 0
     
@@ -125,10 +182,37 @@ class ViewController: UIViewController {
     
 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
         manager = CBCentralManager(delegate: self, queue: nil)
+        
+        setUpSteppers()
         startAccelerometerData()
         startTimer()
+    }
+    
+    
+    func setUpSteppers(){
+        //First Axis
+        firstAxisKpValueLabel.text = "kp: \(kpFirstAxis)"
+        firstAxisKiValueLabel.text = "ki: \(kiFirstAxis)"
+        firstAxisKdValueLabel.text = "kd: \(kdFirstAxis)"
+        
+        firstAxisKpStepper.value = kpFirstAxis
+        firstAxisKiStepper.value = kiFirstAxis
+        firstAxisKdStepper.value = kdFirstAxis
+        
+        //Second Axis
+        secondAxisKpValueLabel.text = "kp: \(kpSecondAxis)"
+        secondAxisKiValueLabel.text = "ki: \(kiSecondAxis)"
+        secondAxiskdValueLabel.text = "kd: \(kdSecondAxis)"
+        
+        secondAxisKpStepper.value = kpSecondAxis
+        secondAxisKiStepper.value = kiSecondAxis
+        secondAxisKdStepper.value = kdSecondAxis
+        
+        
     }
     
     func startAccelerometerData(){
@@ -164,7 +248,7 @@ class ViewController: UIViewController {
     func startTimer(){
         if timer == nil {
             timer = Timer.scheduledTimer(
-                                            timeInterval: 0.5,
+                                            timeInterval: readTime,
                                             target: self,
                                             selector: #selector(sendData),
                                             userInfo: nil,
@@ -188,23 +272,96 @@ class ViewController: UIViewController {
         }
         
         
-        print("-----------------")
         
-        let pidValueSecondAxis = Int(getProportionalValueSecondAxis())
+        let pidValueSecondAxis = Int(getProportionalValueSecondAxis() + getIntegralValueSecondAxis() + getDerivativeValueSecondAxis())
         
         let newValueSecondAxis = positionForSecondAxis - pidValueSecondAxis
         
         if newValueSecondAxis > 0 && newValueSecondAxis < 180 {
             positionForSecondAxis = newValueSecondAxis
         }
-        print(getProportionalValueSecondAxis())
+       
         actualPositionForSecondAxis = (positionForSecondAxis * 90) / 110
-        print(actualPositionForSecondAxis)
         
-        print("-----------------")
         
         writeValue()
     }
+    
+    
+    @IBAction func changedFirstAxisPIDValue(_ sender: UIStepper) {
+        
+        integralErrorFirstAxis = 0
+        actualErrorFirstAxis = 0.0
+        oldErrorFirstAxis = 0.0
+        
+        switch sender.tag {
+        case 0:
+            kpFirstAxis = sender.value
+        case 1:
+            kiFirstAxis = sender.value
+        case 2:
+            kdFirstAxis = sender.value
+        default:
+            return
+        }
+        
+    }
+    
+    
+    @IBAction func changedSecondAxisPIDValue(_ sender: UIStepper) {
+        
+        integralErrorSecondAxis = 0
+        actualErrorSecondAxis = 0.0
+        oldErrorSecondAxis = 0.0
+        
+        switch sender.tag {
+        case 0:
+            kpSecondAxis = sender.value
+        case 1:
+            kiSecondAxis = sender.value
+        case 2:
+            print(sender.value)
+            kdSecondAxis = sender.value
+        default:
+            return
+        }
+        
+    }
+    
+    @IBAction func changeValue(_ sender: Any) {
+        
+        if appState == .controlling {
+            
+            appState = .changing
+            
+            variablesView.isHidden = false
+            changeValueButton.setTitle("Start", for: .normal)
+            
+            timer?.invalidate()
+            timer = nil
+            
+            integralErrorFirstAxis = 0
+            actualErrorFirstAxis = 0.0
+            oldErrorFirstAxis = 0.0
+            
+            integralErrorSecondAxis = 0
+            actualErrorSecondAxis = 0.0
+            oldErrorSecondAxis = 0.0
+        }
+        
+        else if appState == .changing {
+            appState = .controlling
+            
+            changeValueButton.setTitle("Stop", for: .normal)
+            variablesView.isHidden = false
+            
+            startTimer()
+        }
+        
+        
+        
+    }
+    
 
 
 }
@@ -313,12 +470,12 @@ extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {
             
             if let characteristic = myCharacteristic {
                 myBluetoothPeripheral.writeValue(dataToSend, for: characteristic, type: CBCharacteristicWriteType.withoutResponse)
-                print("Sended")
             }
         } else {
             print("Not connected")
         }
     }
+    
     
     
     
