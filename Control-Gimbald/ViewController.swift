@@ -9,12 +9,21 @@
 import UIKit
 import CoreMotion
 import CoreBluetooth
+import Charts
 
 enum controlState {
     case controlling, changing
 }
 
+enum chartsOptions {
+    case firstAxis, secondAxis, bothAxis
+}
+
 class ViewController: UIViewController {
+    
+    @IBOutlet weak var lineChart: LineChartView!
+    @IBOutlet weak var chartView: UIView!
+    
     
     @IBOutlet weak var xAngleLabel: UILabel!
     
@@ -24,6 +33,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var variablesView: UIView!
     
     var appState: controlState = .controlling
+    var actualChart: chartsOptions = .firstAxis
     
 //    First Axis Stepper
     
@@ -47,7 +57,21 @@ class ViewController: UIViewController {
     @IBOutlet weak var secondAxisKiStepper: UIStepper!
     @IBOutlet weak var secondAxisKdStepper: UIStepper!
     
+ 
+//    First Axis Chart
     
+    var firstAxisLineChartEntry = [ChartDataEntry]()
+    var firstAxisChartLine: LineChartDataSet?
+    var firstAxisData: LineChartData?
+    
+//    Second Axis Chart
+    
+    var secondAxisLineChartEntry = [ChartDataEntry]()
+    var secondAxisChartLine: LineChartDataSet?
+    var secondAxisData: LineChartData?
+    
+    
+//    Second Axis Chart
     
     
     let motionManager = CMMotionManager()
@@ -66,8 +90,8 @@ class ViewController: UIViewController {
     
     
     //PID
-    
     var readTime = 0.05
+    var elapsedTime = 0.0
     
     //First Axis
     
@@ -187,9 +211,12 @@ class ViewController: UIViewController {
         
         manager = CBCentralManager(delegate: self, queue: nil)
         
+        chartView.isHidden = true
+        
         setUpSteppers()
         startAccelerometerData()
         startTimer()
+        
     }
     
     
@@ -228,11 +255,23 @@ class ViewController: UIViewController {
                 self.angleYZ = Int(self.accelerationIntoDegrees(accelerometerData.acceleration.y, accelerometerData.acceleration.z))
                 
                 DispatchQueue.main.async {
+                    
+                    
+                    
                     self.actualValueSecondAxis = abs(self.angleXY)
                     self.xAngleLabel.text = "\(self.actualValueSecondAxis)"
                     
+                    let secondAxisChartValue = ChartDataEntry(x: self.elapsedTime, y: Double(self.actualValueSecondAxis))
+                    self.secondAxisLineChartEntry.append(secondAxisChartValue)
+                    
                     self.actualValueFirstAxis = abs(self.angleXZ)
                     self.yAngleLabel.text = "\(self.actualValueFirstAxis)"
+                    
+                    let firstAxisChartValue = ChartDataEntry(x: self.elapsedTime, y: Double(self.actualValueFirstAxis))
+                    self.firstAxisLineChartEntry.append(firstAxisChartValue)
+                    
+                    self.elapsedTime += self.readTime
+                    
                 }
                 
             }
@@ -260,9 +299,7 @@ class ViewController: UIViewController {
     
     @objc func sendData(){
         
-        
-        
-        let pidValueFirstAxis = Int(getProportionalValueFirstAxis() + getIntegralValueFirstAxis() + getDerivativeValueFirstAxis())
+        let pidValueFirstAxis = Int(getProportionalValueFirstAxis() + getIntegralValueFirstAxis() +  getDerivativeValueFirstAxis())
         
         let newValueFirstAxis = positionForFirstAxis - pidValueFirstAxis
         
@@ -352,6 +389,12 @@ class ViewController: UIViewController {
         else if appState == .changing {
             appState = .controlling
             
+            
+            elapsedTime = 0.0
+            
+            firstAxisLineChartEntry = [ChartDataEntry]()
+            secondAxisLineChartEntry = [ChartDataEntry]()
+            
             changeValueButton.setTitle("Stop", for: .normal)
             variablesView.isHidden = false
             
@@ -362,8 +405,94 @@ class ViewController: UIViewController {
         
     }
     
-
-
+    @IBAction func changeChartsVisibility(_ sender: UIButton) {
+        if sender.tag == 1 {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.chartView.alpha = 0
+            }) { (completion) in
+                self.chartView.isHidden = true
+            }
+        }
+        else {
+            
+            updateAxisChartData()
+            showChartForAxis(actualChart)
+            
+            self.chartView.isHidden = false
+            self.chartView.alpha = 0
+            UIView.animate(withDuration: 0.3, animations: {
+                self.chartView.alpha = 1
+            })
+        }
+    }
+    
+    @IBAction func changeAxisChart(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            actualChart = .firstAxis
+        case 1:
+            actualChart = .secondAxis
+        case 2:
+            actualChart = .bothAxis
+            
+        default:
+            print(sender.selectedSegmentIndex)
+            
+        }
+        
+        showChartForAxis(actualChart)
+    }
+    
+    
+    @IBAction func updateChartInformation(_ sender: UIButton) {
+        updateAxisChartData()
+    }
+    
+    
+    func updateAxisChartData(){
+        firstAxisData = LineChartData()
+        
+        firstAxisChartLine = LineChartDataSet(values: firstAxisLineChartEntry, label: "First Axis")
+        
+        firstAxisChartLine?.drawCirclesEnabled = false
+        
+        firstAxisData?.addDataSet(firstAxisChartLine)
+        
+        
+        secondAxisData = LineChartData()
+        
+        secondAxisChartLine = LineChartDataSet(values: secondAxisLineChartEntry, label: "Second Axis")
+        
+        secondAxisChartLine?.colors = [NSUIColor.red]
+        
+        secondAxisChartLine?.drawCirclesEnabled = false
+        
+        secondAxisData?.addDataSet(secondAxisChartLine)
+        
+        showChartForAxis(actualChart)
+        
+        
+    }
+    
+    func showChartForAxis(_ axis: chartsOptions){
+        let data: LineChartData
+        
+        switch axis {
+        case .firstAxis:
+            data = firstAxisData!
+        case .secondAxis:
+            data = secondAxisData!
+        case .bothAxis:
+            data = LineChartData()
+            data.addDataSet(firstAxisChartLine)
+            data.addDataSet(secondAxisChartLine)
+        }
+        
+        lineChart.pinchZoomEnabled = true
+        lineChart.data = data
+    }
+    
+    
 }
 
 extension ViewController: CBCentralManagerDelegate, CBPeripheralDelegate {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C490E1ABCD56C49B1CC9D52F /* Pods_Control_Gimbald.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D965998B624EBB694EEC8869 /* Pods_Control_Gimbald.framework */; };
 		D4EAD83F223749F500729631 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAD83E223749F500729631 /* AppDelegate.swift */; };
 		D4EAD841223749F500729631 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EAD840223749F500729631 /* ViewController.swift */; };
 		D4EAD844223749F500729631 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D4EAD842223749F500729631 /* Main.storyboard */; };
@@ -15,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		745372BCAF59592CD0892B64 /* Pods-Control-Gimbald.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Control-Gimbald.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Control-Gimbald/Pods-Control-Gimbald.debug.xcconfig"; sourceTree = "<group>"; };
+		A5D83512A9CA164C926CDD95 /* Pods-Control-Gimbald.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Control-Gimbald.release.xcconfig"; path = "Pods/Target Support Files/Pods-Control-Gimbald/Pods-Control-Gimbald.release.xcconfig"; sourceTree = "<group>"; };
 		D4EAD83B223749F500729631 /* Control-Gimbald.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Control-Gimbald.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4EAD83E223749F500729631 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D4EAD840223749F500729631 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +25,7 @@
 		D4EAD845223749F600729631 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D4EAD848223749F600729631 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D4EAD84A223749F600729631 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D965998B624EBB694EEC8869 /* Pods_Control_Gimbald.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Control_Gimbald.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +33,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C490E1ABCD56C49B1CC9D52F /* Pods_Control_Gimbald.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		397ABC2F1955F72D111B4EA0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				745372BCAF59592CD0892B64 /* Pods-Control-Gimbald.debug.xcconfig */,
+				A5D83512A9CA164C926CDD95 /* Pods-Control-Gimbald.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		402EBEC6B13085009E8101DC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D965998B624EBB694EEC8869 /* Pods_Control_Gimbald.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D4EAD832223749F500729631 = {
 			isa = PBXGroup;
 			children = (
 				D4EAD83D223749F500729631 /* Control-Gimbald */,
 				D4EAD83C223749F500729631 /* Products */,
+				397ABC2F1955F72D111B4EA0 /* Pods */,
+				402EBEC6B13085009E8101DC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,9 +95,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D4EAD84D223749F600729631 /* Build configuration list for PBXNativeTarget "Control-Gimbald" */;
 			buildPhases = (
+				FFA5EDC480EA5AEA8029E6AD /* [CP] Check Pods Manifest.lock */,
 				D4EAD837223749F500729631 /* Sources */,
 				D4EAD838223749F500729631 /* Frameworks */,
 				D4EAD839223749F500729631 /* Resources */,
+				97778223361665AFC6BC761E /* [CP] Embed Pods Frameworks */,
+				234716C21313675C9E828625 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -129,6 +156,60 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		234716C21313675C9E828625 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Control-Gimbald/Pods-Control-Gimbald-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97778223361665AFC6BC761E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Control-Gimbald/Pods-Control-Gimbald-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Control-Gimbald/Pods-Control-Gimbald-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FFA5EDC480EA5AEA8029E6AD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Control-Gimbald-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D4EAD837223749F500729631 /* Sources */ = {
@@ -280,36 +361,40 @@
 		};
 		D4EAD84E223749F600729631 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 745372BCAF59592CD0892B64 /* Pods-Control-Gimbald.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 27MUBRMHKJ;
 				INFOPLIST_FILE = "Control-Gimbald/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.zippi.Control-Gimbald";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		D4EAD84F223749F600729631 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5D83512A9CA164C926CDD95 /* Pods-Control-Gimbald.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 27MUBRMHKJ;
 				INFOPLIST_FILE = "Control-Gimbald/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.zippi.Control-Gimbald";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

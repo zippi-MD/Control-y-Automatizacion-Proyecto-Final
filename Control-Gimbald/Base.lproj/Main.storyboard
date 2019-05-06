@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Acelerómetro" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GL8-TE-JtS">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Axis Position" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GL8-TE-JtS">
                                 <rect key="frame" x="64" y="20" width="255" height="84"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="38"/>
@@ -26,7 +26,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Y: " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AGu-VH-IUd">
-                                <rect key="frame" x="108" y="112" width="189" height="75"/>
+                                <rect key="frame" x="97" y="112" width="189" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="45"/>
                                 <nil key="textColor"/>
@@ -51,16 +51,9 @@
                                         </connections>
                                     </stepper>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="First Axis" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ApX-34-nNJ">
-                                        <rect key="frame" x="237" y="22" width="70" height="21"/>
+                                        <rect key="frame" x="228" y="24" width="88" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Second Axis" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KNk-7Q-ndh">
-                                        <rect key="frame" x="224" y="162" width="95" height="21"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -134,9 +127,23 @@
                                             <action selector="changedSecondAxisPIDValue:" destination="BYZ-38-t0r" eventType="valueChanged" id="31L-u7-wrN"/>
                                         </connections>
                                     </stepper>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Second Axis" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KNk-7Q-ndh">
+                                        <rect key="frame" x="214" y="169" width="117" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="X: " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnV-Wz-Zw0">
+                                <rect key="frame" x="97" y="219" width="189" height="74"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="45"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oIg-W1-IWW">
                                 <rect key="frame" x="664" y="324" width="134" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -146,25 +153,79 @@
                                     <action selector="changeValue:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iAZ-OV-fes"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="X: " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnV-Wz-Zw0">
-                                <rect key="frame" x="108" y="219" width="189" height="74"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Ia-wg-ok4" userLabel="Chart">
+                                <rect key="frame" x="0.0" y="0.0" width="812" height="375"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cFY-kL-K3B">
+                                        <rect key="frame" x="131" y="10" width="552" height="29"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <segments>
+                                            <segment title="First Axis"/>
+                                            <segment title="Second Axis"/>
+                                            <segment title="Both Axis"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="changeAxisChart:" destination="BYZ-38-t0r" eventType="valueChanged" id="4hS-lV-iTV"/>
+                                        </connections>
+                                    </segmentedControl>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UQL-6d-hhX">
+                                        <rect key="frame" x="30" y="13" width="51" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Update"/>
+                                        <connections>
+                                            <action selector="updateChartInformation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HMe-gB-iss"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mvc-L0-ELj">
+                                        <rect key="frame" x="739" y="8" width="39" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Close"/>
+                                        <connections>
+                                            <action selector="changeChartsVisibility:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JD6-si-q9t"/>
+                                        </connections>
+                                    </button>
+                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rWf-V4-dRq" userLabel="lineChart" customClass="LineChartView" customModule="Charts">
+                                        <rect key="frame" x="50" y="50" width="712" height="295"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="rWf-V4-dRq" firstAttribute="top" secondItem="4Ia-wg-ok4" secondAttribute="top" constant="50" id="6Hu-ZC-FOH"/>
+                                    <constraint firstAttribute="trailing" secondItem="rWf-V4-dRq" secondAttribute="trailing" constant="50" id="8Ez-Nd-lec"/>
+                                    <constraint firstItem="rWf-V4-dRq" firstAttribute="leading" secondItem="4Ia-wg-ok4" secondAttribute="leading" constant="50" id="Oe6-k3-NOh"/>
+                                    <constraint firstAttribute="bottom" secondItem="rWf-V4-dRq" secondAttribute="bottom" constant="30" id="w3e-nl-f5Z"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rN0-8b-CN4">
+                                <rect key="frame" x="39" y="329" width="64" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="45"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Graphs"/>
+                                <connections>
+                                    <action selector="changeChartsVisibility:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uCL-uV-Fpy"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="4Ia-wg-ok4" secondAttribute="bottom" id="MoS-HB-ebn"/>
+                            <constraint firstItem="4Ia-wg-ok4" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="THw-1Y-JWA"/>
+                            <constraint firstAttribute="trailing" secondItem="4Ia-wg-ok4" secondAttribute="trailing" id="WgO-lr-U5x"/>
+                            <constraint firstItem="4Ia-wg-ok4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="bBO-Lc-f0E"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="changeValueButton" destination="oIg-W1-IWW" id="9SS-YF-pEF"/>
+                        <outlet property="chartView" destination="4Ia-wg-ok4" id="TeI-Up-2Jy"/>
                         <outlet property="firstAxisKdStepper" destination="l3e-49-PTv" id="ODC-TA-pZl"/>
                         <outlet property="firstAxisKdValueLabel" destination="dgy-09-Lcf" id="HSr-HT-9Mx"/>
                         <outlet property="firstAxisKiStepper" destination="NNs-I9-hdU" id="EnJ-GF-ykH"/>
                         <outlet property="firstAxisKiValueLabel" destination="C7i-hr-oP7" id="zbm-dX-xNV"/>
                         <outlet property="firstAxisKpStepper" destination="VKr-NG-ZtZ" id="Rg7-73-qYl"/>
                         <outlet property="firstAxisKpValueLabel" destination="QBJ-cg-aMk" id="xzJ-ef-CUL"/>
+                        <outlet property="lineChart" destination="rWf-V4-dRq" id="QUU-SM-UQa"/>
                         <outlet property="secondAxisKdStepper" destination="7Kn-r4-KeC" id="PJL-tZ-6Yk"/>
                         <outlet property="secondAxisKiStepper" destination="zc9-A6-wEW" id="r5t-8O-30a"/>
                         <outlet property="secondAxisKiValueLabel" destination="edV-kr-pgi" id="K37-zr-50x"/>
